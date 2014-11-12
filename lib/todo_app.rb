@@ -7,41 +7,33 @@ class TodoApp < CommandLineApp
   end
 
   def run
-    puts "Welcome"
-    puts "'list' to list projects"
-    puts "'create' to create a new project"
-    puts "'edit' to edit a project"
-    puts "'rename' to rename a project"
-    puts "'delete' to rename a project"
-
+    print_project_menu
     welcome_menu = true
 
 
     while welcome_menu
       input = gets.chomp
       if input == 'list'
-        puts "Projects:\n  #{print_projects} "
+      putting_project
 
       elsif input == 'create'
-        puts "Please enter the new project name:\n"
-        create_project = gets.chomp
-        @projects << create_project
-        run
+        create_puts
+        create_gets_project_name
+        create_add_project
+        print_project_menu
 
       elsif input == 'delete'
-        puts "Please enter the project name to delete:\n"
-        delete_project = gets.chomp
-        if @projects.include?(delete_project)
-          @projects.delete(delete_project)
-        end
+        delete_puts_project
+        delete_gets_project
+        delete_manipulate_project
 
       elsif input == 'rename'
-        puts "Please enter the project name to rename:\n"
-        rename_project = gets.chomp
-        if @projects.include?(rename_project)
+        rename_puts_project
+        rename_gets_project
+        if @projects.include?(@rename_project)
           puts "Please enter the new project name:\n"
           new_project_name = gets.chomp
-          @projects.delete(rename_project)
+          @projects.delete(@rename_project)
           @projects << new_project_name
         end
 
@@ -89,7 +81,7 @@ class TodoApp < CommandLineApp
                 puts "task not found: 'not here'"
               end
             elsif task_input == 'back'
-              run
+              print_project_menu
               task_menu = false
             elsif task_input == 'quit'
               welcome_menu = false
@@ -130,5 +122,61 @@ class TodoApp < CommandLineApp
 
   def real_puts message = ""
     $stdout.puts message
+  end
+end
+
+################MYCODESTARTSHERE############
+#printer
+def print_project_menu
+  puts "Welcome"
+  puts "'list' to list projects"
+  puts "'create' to create a new project"
+  puts "'edit' to edit a project"
+  puts "'rename' to rename a project"
+  puts "'delete' to rename a project"
+end
+
+def putting_project
+  #welcome menu puts
+puts "Projects:\n  #{print_projects} "
+end
+
+def create_puts
+  puts "Please enter the new project name:\n"
+end
+
+def create_gets_project_name
+  @create_project = gets.chomp
+end
+
+def delete_puts_project
+  puts "Please enter the project name to delete:\n"
+end
+
+def delete_gets_project
+  @delete_project = gets.chomp
+end
+
+def rename_puts_project
+  puts "Please enter the project name to rename:\n"
+end
+
+def rename_gets_project
+  @rename_project = gets.chomp
+end
+#getter
+
+def get_input
+  gets.chomp
+end
+
+#data
+def create_add_project
+  @projects << @create_project
+end
+
+def delete_manipulate_project
+  if @projects.include?(@delete_project)
+    @projects.delete(@delete_project)
   end
 end
